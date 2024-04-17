@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <label>Name :<input type="text" name="name" id="name"></label><br><br>
+    <label>email : <input type="text" name="email" id="email"></label><br><br>
+    <label>number : <input type="number" name="number" id="number"></label><br><br>
+    <button onclick="add()">Add</button>
+    <br><br>
+
+
+
+    <input type="text" name="name" id="viewname" />
+    <input type="text" name="age" id="viewemail" />
+    <input type="numder" name="index" id="number" />
+    <button onclick="update()">save changes</button><br /><br />
+
+
+    <table border="1" cellpadding="10" cellspacing="1">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>email</th>
+                <th>number</th>
+                <th>clear</th>
+                <th>view</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+
+
+        <script>
+            let data = JSON.parse(localStorage.getItem("data")) || [];
+
+            let add = () => {
+                let data1 = {
+                    name: document.getElementById("name").value,
+                    email: document.getElementById("email").value,
+                    number: document.getElementById("number").value
+                }
+                data.push(data1);
+
+                localStorage.setItem("data", JSON.stringify(data));
+                location.reload()
+            }
+
+            let loaddata = () => {
+                let tbody = document.getElementById("tbody");
+                data.map((val, ind) => {
+                    let tr = document.createElement("tr");
+                    tr.innerHTML = `
+                                 <td>${val.name}</td>
+                                <td>${val.email}</td>
+                                <td>${val.number}</td>
+                                <td><button onclick="removeData(${ind})">Delete</button></td>
+                                <td><button onclick="view(${ind})">view</button></td>
+                                `
+                    tbody.appendChild(tr)
+                })
+            }
+            loaddata()
+
+            function removeData(index) {
+                console.log(index);
+                let result = data[index];
+                console.log(result);
+                console.log("deleted success");
+
+                let newdata = data.filter((val) => val.name !== result.name);
+                console.log(newdata);
+
+                localStorage.setItem("data", JSON.stringify(newdata));
+                location.reload();
+            }
+
+            function view(index) {
+                let data2 = data[index];
+                console.log(data);
+
+                document.getElementById("viewname").value = data2.name;
+                document.getElementById("viewemail").value = data2.email;
+            }
+
+            function update(index) {
+                let name = document.getElementById("viewname").value;
+                let age = document.getElementById("viewemail").value;
+                let data3 = {
+                    name,
+                    email,
+                };
+
+             
+            }
+
+
+
+        </script>
+</body>
+
+</html>
